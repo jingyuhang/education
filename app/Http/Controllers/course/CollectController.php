@@ -222,7 +222,7 @@ class CollectController extends Controller
 //        session_start();
         $u_id=1;
 
-//        dd($u_id);
+//        dd($u_id);//
         $data=$request->all();
         $favrite_name=$request->get('favorite_name');//接收到的收藏夹名称
         $course_name=$request->get('course_name');//接收到的收藏夹名称
