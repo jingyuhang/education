@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title','导航添加')
 @section('content')
 @include('public.left')
     <form action="{{url('/OrderController/order_show')}}" method="get">
@@ -21,7 +20,6 @@
         <tr>
             <td>订单ID</td>
             <td>订单编号</td>
-            <td>课程名称</td>
             <td>用户 id</td>
             <td>支付方式</td>
             <td>支付金额</td>
@@ -32,7 +30,6 @@
             <tr>
                 <td>{{$v->order_id}}</td>
                 <td>{{$v->order_mark}}</td>
-                <td>{{$v->course_name}}</td>
                 <td>{{$v->u_id}}</td>
                 <td>{{$v->pay_name}}</td>
                 <td>{{$v->pay_price}}</td>

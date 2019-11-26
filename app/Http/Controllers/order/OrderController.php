@@ -5,7 +5,8 @@ namespace App\Http\Controllers\order;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Model\Course;
+use App\Model\Paymethod;
 class OrderController extends Controller
 {
     //创建订单
@@ -86,7 +87,7 @@ class OrderController extends Controller
 
         $order_info = DB::table('order')
             ->join('pay_method', 'order.pay_id', '=', 'pay_method.pay_id')
-            ->join('course', 'order.course_id', '=', 'course.course_id')
+            // ->join('course', 'order.course_id', '=', 'course.course_id')
             ->where($where)
             ->orderBy('order.order_id','desc')
             ->paginate(1);
@@ -408,6 +409,76 @@ class OrderController extends Controller
             ->toArray();
 //        dd($course_info);
         return view('order/course_detail',['course_info'=>$course_info]);
-
     }
+
+    public function create_order_and_detail(Request $request)
+    {
+        $data=$request->all();
+        $course_id=$request->session()->get('course_id');
+        $course = explode(',',$course_id);
+        // dd($course_id);
+        $u_id=$data['u_id'];
+        $lect_id=$request->session()->get('lect_id');
+        $p_id=$data['p_id'];
+        $order_mark = rand(1,time());
+        $price = [];
+            $price = Course::whereIn('course_id',$course)->get('course_price')->toArray();
+            // dd($price);
+        foreach($price as $vv){
+            $total_price=array_sum(array_map(function($vv){return $vv['course_price'];}, $price));
+        }
+
+        // dd($total_price);
+        $order_id = DB::table('order')->insertGetId([
+            'order_mark'=>$order_mark,
+            'u_id'=>$u_id,
+            'pay_id'=>$p_id,
+            'pay_price'=>$total_price
+        ]);
+        // dd($order_id);
+        
+            $insert_data = [];
+            // $course_price_array = [];
+            foreach ($course as $k => $v)
+            {
+                // dd($v);
+                $price = Course::where('course_id',$v)->get('course_price')->toArray();
+                // dd($price);
+                foreach($price as $vv){
+                    // dd($vv);
+                    $insert_data[]=[
+                        'course_id'=>$v,
+                        'lect_id'=>$lect_id,
+                        'course_price'=>$vv['course_price'],
+                        'is_free'=>1,
+                        'create_time'=>time(),
+                        'order_id'=>$order_id,
+                        'u_id'=>$u_id
+                    ];
+                }
+
+            }
+                    // dd($insert_data);
+        //先不做订单表 先做订单详情
+        $detail_insert=DB::table('detail')->insert($insert_data);
+        if($detail_insert){
+            return json_encode(['code'=>200,'msg'=>'购买成功']);
+        }else{
+            return json_encode(['code'=>201,'msg'=>'购买失败']);
+        }
+        
+   }
+   public function order_pay(Request $request)
+   {
+        //查支付方式
+        $pay_info=Paymethod::get()->toArray();
+        // dd($pay_info);
+        $course_id = $request->input('course_id_array');
+        $lect_id = $request->input('lect_id');
+        // dd($lect_id);
+        session(['course_id'=>$course_id]);
+        session(['lect_id'=>$lect_id]);
+        // dd($course_id);
+        return view('order/order_pay',['pay_info'=>$pay_info]);
+   }
 }

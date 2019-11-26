@@ -25,8 +25,8 @@
         </tr>
         @foreach($data as $k=>$v)
             <tr course_id="{{$v->course_id}}">
-                <td>{{$v->course_id}}</td>
-                <td>{{$v->course_name}}</td>
+                <td> <input type="checkbox" name="course_id_arr" id="" value="{{$v->course_id}}">{{$v->course_id}}</td>
+                <td class="lect_id" lect_id="{{$v->lect_id}}">{{$v->course_name}}</td>
                 <td>{{$v->cate_name}}</td>
                 <td>
                     @if(($v->course_status)==1)
@@ -37,7 +37,7 @@
                         授课完毕
                     @endif
                 </td>
-                <td>{{$v->course_total}}</td>
+                <td class="u_id" u_id="{{$_SESSION['user_id']}}">{{$v->course_total}}</td>
                 <td>{{$v->already_study_num}}</td>
                 <td><img src="{{asset($v->title_picture)}}" width="50"></td>
                 <td>{{$v->intro}}</td>
@@ -55,6 +55,9 @@
             </tr>
         @endforeach
     </table>
+    <div>
+        <input class="layui-btn" type="button" value="购买" id="buy">
+    </div>
 </center>
 <script>
     $(document).on('click','.del',function(){
@@ -74,5 +77,25 @@
             }
         })
     })
+    $(document).on('click',"#buy",function () {
+        // alert(1);
+        var u_id=$(".u_id").attr('u_id');
+        var lect_id =$(".lect_id").attr('lect_id');
+        //jquery获取复选框值
+        var course_id_array =[];//定义一个数组
+        $('input[name="course_id_arr"]:checked').each(function(){//遍历每一个名字为interest的复选框，其中选中的执行函数
+            course_id_array.push($(this).val());//将选中的值添加到数组course_id_array中
+        });
+        window.location.href="http://www.edublog.com/OrderController/order_pay?u_id="+u_id+"&lect_id="+lect_id+"&course_id_array="+course_id_array;
+        // $.ajax({
+        //     url:"{{url('/OrderController/order_pay')}}",
+        //     data: {course_id_array:course_id_array, u_id:u_id,lect_id:lect_id},
+        //     type: 'post',
+        //     dataType: 'json',
+        //     success: function (res) {
+        //         console.log(res);
+        //     }
+        // })
+})
 </script>
 @endsection

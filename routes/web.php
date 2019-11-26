@@ -307,6 +307,9 @@ Route::middleware(['login','menu'])->group(function(){
     Route::get('/OrderController/select_teacher_detail/{detail_id}','order\OrderController@select_teacher_detail')->name('订单详情中查看讲师详情');
     //订单详情中查看课程详情
     Route::get('/OrderController/select_course_detail/{detail_id}','order\OrderController@select_course_detail')->name('订单详情中查看课程详情');
-
+    //添加订单执行
+    Route::any('/OrderController/create_order_and_detail','order\OrderController@create_order_and_detail');
+    //订单选择支付类型
+    Route::any('/OrderController/order_pay','order\OrderController@order_pay');
 
 });

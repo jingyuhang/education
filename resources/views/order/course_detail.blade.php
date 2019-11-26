@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title','导航添加')
 @section('content')
 @include('public.left')
     <table class="layui-table table-bordered table-hover table-striped" border="1">

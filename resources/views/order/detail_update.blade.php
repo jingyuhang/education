@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title','导航添加')
 @section('content')
 @include('public.left')
     <form>

@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('title','导航添加')
 @section('content')
 @include('public.left')
-<a href="{{ url('OrderController/create_order_view') }}" class="layui-btn">添加订单</a>
     {{--<form action="{{url('/OrderController/detail_show')}}" method="get">--}}
         {{--<div class="form-inline">--}}
             {{--讲师：--}}
@@ -34,7 +32,6 @@
             <td>课程名称</td>
             <td>讲师名称</td>
             <td>用户id</td>
-            <td>课程视频</td>
             <td>是否免费</td>
             <td>课程价格</td>
             <td>创建时间</td>
@@ -47,7 +44,6 @@
                 <td>{{$v->course_name}}</td>
                 <td>{{$v->lect_name}}</td>
                 <td>{{$v->u_id}}</td>
-                <td>{{$v->video}}</td>
                 <td>@if($v->is_free==1)免费 @else 付费 @endif</td>
                 <td>{{$v->course_price}}</td>
                 <td>{{date('Y-m-d H:i:s',$v->create_time)}}</td>
