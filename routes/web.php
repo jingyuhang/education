@@ -308,8 +308,19 @@ Route::middleware(['login','menu'])->group(function(){
     //订单详情中查看课程详情
     Route::get('/OrderController/select_course_detail/{detail_id}','order\OrderController@select_course_detail')->name('订单详情中查看课程详情');
     //添加订单执行
-    Route::any('/OrderController/create_order_and_detail','order\OrderController@create_order_and_detail');
+    Route::any('/OrderController/create_order_and_detail','order\OrderController@create_order_and_detail')->name('添加订单执行');
     //订单选择支付类型
-    Route::any('/OrderController/order_pay','order\OrderController@order_pay');
+    Route::any('/OrderController/order_pay','order\OrderController@order_pay')->name('订单选择支付类型');
+
+
+    //试卷添加视图
+    Route::any('/test/create','test\TestController@create')->name('试卷添加视图');
+    //试卷添加执行
+    Route::any('/test/store','test\TestController@store')->name('试卷添加执行');
+    //题库展示
+    Route::get('/TestController/test_show','test\TestController@test_show')->name('试卷列表展示');
+    //题库删除
+    Route::get('/TestController/test_del/{test_id}','test\TestController@test_del')->name('试卷删除');
+
 
 });
