@@ -18,7 +18,7 @@
         </tr>
         @foreach($activity_info as $v)
             <tr>
-                <td>{{$v['activity_id']}}</td>
+                <td><input type="checkbox" name="haha" value="{{$v->activity_id}}" id="activity_id">{{$v['activity_id']}}</td>
                 <td>{{$v['activity_title']}}</td>
                 <td>{{$v['activity_content']}}</td>
                 <td>{{date("Y-m-d H:i:s",$v['activity_time'])}}</td>
@@ -33,8 +33,10 @@
         @endforeach
 
     </table>
+
     {{ $activity_info->links() }}
     {{--{{ $data->appends(['goods_name' => $goods_name])->links() }}--}}
+    <center><a href="javascript:;" class="btn btn-danger">参加该活动</a></center>
     <script>
         $(document).on('click','#shanchu',function () {
             var _this=$(this);
@@ -51,8 +53,32 @@
                 }
             })
         });
-
-
+        var course_id = getQueryString("course_id");
+        $(document).on('click','.btn',function(){
+            var aa =[];//定义一个数组
+            $('input[name="haha"]:checked').each(function(){//遍历每一个名字为interest的复选框，其中选中的执行函数 
+                aa.push($(this).val());//将选中的值添加到数组course_id_array中
+            });
+            // alert(aa);
+            $.ajax({
+                url:"http://www.edublog.com/course/create_course_activity",
+                type:'POST',
+                data:{aa:aa,course_id:course_id},
+                dataType:'json',
+                success:function(res){
+                    // console.log(res);
+                    if(res.code==1){
+                        alert(res.msg);
+                        location.href='http://www.edublog.com/course/course';
+                    }
+                }
+            })
+        })
+        function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+        }
 
     </script>
 

@@ -115,4 +115,47 @@ class CourseController extends Controller
             return redirect()->action('course\courseController@courselist');
         }
     }
+
+    //活动详情
+    public function course_activity_show(Request $request)
+    {
+        $u_id=$request->input();
+        // dd($u_id);
+        $data=DB::table('course_activity')
+        ->join('activity','course_activity.activity_id','=','activity.activity_id')
+        ->where('course_id','=',$u_id)
+        ->paginate(1);
+        // dd($data);
+        $res=DB::table('course_activity')
+        ->join('course','course_activity.course_id','=','course.course_id')
+        ->where('course_activity.course_id','=',$u_id)
+        ->get()->toArray();
+        // dd($res['course_price']);
+        $price = '';
+        foreach ($res as $key => $value) {
+            $price  = $res[$key]->course_price;
+        }
+        $c_price = $price*0.5;
+        // dd($c_price);
+        return view('course\activity\course_activity',['data'=>$data,'res'=>$res,'c_price'=>$c_price]);
+    }
+    //添加活动
+    public function create_course_activity(Request $request)
+    {
+        $aa=$request->input();
+        // dd($aa);
+        $activity_id=$aa['aa'];
+        $course_id=$aa['course_id'];
+        $a = implode(",", $activity_id);
+        $res=DB::table('course_activity')->insert([
+            'course_id'=>$course_id,
+            'activity_id'=>$a,
+        ]);
+        // dd($res);
+        if($res){
+            return json_encode(['msg'=>"成功参加活动",'code'=>1]);
+        }else{
+            return json_encode(['msg'=>"参加活动失败",'code'=>2]);
+        }
+    }
 }

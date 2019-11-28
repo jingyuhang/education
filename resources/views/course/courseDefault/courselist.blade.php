@@ -51,6 +51,8 @@
                 <a href="{{url('course/note')}}?course_id={{$v->course_id}}" class="btn btn-danger">查看笔记</a>
                 <a href="{{url('evaluate/course')}}?course_id={{$v->course_id}}" class="btn btn-danger">查看评价</a>
                 <a href="{{url('NoticeController/notice_show_view')}}?course_id={{$v->course_id}}" class="btn btn-danger">查看公告</a>
+                <a href="{{url('ActivityController/activity_show')}}?course_id={{$v->course_id}}" class="btn btn-danger">参加活动</a>
+                <a href="{{url('course/course_activity_show')}}?course_id={{$v->course_id}}" class="btn btn-danger">活动详情</a>
                 </td>
             </tr>
         @endforeach

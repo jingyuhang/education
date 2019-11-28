@@ -99,6 +99,8 @@ Route::middleware(['login','menu'])->group(function(){
         Route::any('course/coursedel','course\courseController@coursedel')->name('课程删除');//课程删除
         Route::any('course/courseedit','course\courseController@courseedit')->name('课程修改');//课程修改
         Route::any('course/courseupdate','course\courseController@courseupdate')->name('课程修改');//课程修改
+        Route::any('/create_course_activity', 'course\CourseController@create_course_activity')->name('添加活动');
+        Route::any('/course_activity_show', 'course\CourseController@course_activity_show')->name('活动详情');
         //章节
         Route::any('part','course\PartController@partlist')->name('章节列表展示');//章节列表
         Route::any('part/part','course\PartController@part')->name('章节添加渲染视图');//章节添加渲染视图
